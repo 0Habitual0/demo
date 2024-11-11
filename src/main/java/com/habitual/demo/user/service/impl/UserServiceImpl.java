@@ -1,6 +1,8 @@
 package com.habitual.demo.user.service.impl;
 
+import com.habitual.demo.user.repository.UserRepository;
 import com.habitual.demo.user.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
+    @Autowired
+    private UserRepository userRepository;
 
 
 }

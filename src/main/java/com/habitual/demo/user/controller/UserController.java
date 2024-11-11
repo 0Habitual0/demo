@@ -1,6 +1,6 @@
 package com.habitual.demo.user.controller;
 
-import com.habitual.demo.user.entity.User;
+import com.habitual.demo.user.entity.UserEntity;
 import com.habitual.demo.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * 控制层 用户
@@ -28,7 +26,15 @@ public class UserController {
      * 登录
      */
     @PostMapping("login")
-    public void login(@RequestBody User user) {
+    public void login(@RequestBody UserEntity userEntity) {
+
+    }
+
+    /**
+     * 登出
+     */
+    @PostMapping("logout")
+    public void logout(@RequestBody UserEntity userEntity) {
 
     }
 

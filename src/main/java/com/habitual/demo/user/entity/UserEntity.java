@@ -2,6 +2,7 @@ package com.habitual.demo.user.entity;
 
 import com.habitual.demo.common.entity.BaseEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,8 @@ import java.io.Serial;
 @Getter
 @Setter
 @Entity
-public class User extends BaseEntity {
+@Table(name = "user")
+public class UserEntity extends BaseEntity {
 
     /**
      * 序列号版本号
@@ -24,7 +26,7 @@ public class User extends BaseEntity {
     /**
      * 登录账号
      */
-    private String account;
+    private String username;
 
     /**
      * 登录密码
@@ -34,7 +36,7 @@ public class User extends BaseEntity {
     /**
      * 用户名
      */
-    private String username;
+    private String nickName;
 
     /**
      * 邮箱
