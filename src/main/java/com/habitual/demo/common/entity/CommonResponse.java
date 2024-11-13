@@ -58,4 +58,5 @@ public class CommonResponse implements Serializable {
     public static CommonResponse fail(String message) {
         return new CommonResponse(ERROR, message, null);
     }
+
 }

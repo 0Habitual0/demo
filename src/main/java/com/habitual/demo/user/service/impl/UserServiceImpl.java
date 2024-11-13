@@ -47,4 +47,5 @@ public class UserServiceImpl implements UserService {
                 pageable);
         return CommonResponse.success(result);
     }
+
 }

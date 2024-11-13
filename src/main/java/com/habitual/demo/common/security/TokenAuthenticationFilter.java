@@ -39,7 +39,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private Authentication getAuthentication(String token) {
-        // 这是一个硬编码的示例，实际应用中应解析令牌并验证其有效性
+        // 这是一个硬编码的示例，实际应用中应解析令牌并验证其有效性 TODO
         // 假设令牌有效并包含用户信息：用户名 "user" 和角色 "ROLE_USER"
 
         String username = "user1"; // 从令牌中解析出的用户名
@@ -52,4 +52,5 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 Collections.singletonList(new SimpleGrantedAuthority(role))
         );
     }
+
 }

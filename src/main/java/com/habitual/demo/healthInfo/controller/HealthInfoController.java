@@ -44,4 +44,5 @@ public class HealthInfoController {
     public CommonResponse selectByPage(@RequestBody HealthInfoPageDto input) {
         return healthInfoService.selectByPage(input);
     }
+
 }

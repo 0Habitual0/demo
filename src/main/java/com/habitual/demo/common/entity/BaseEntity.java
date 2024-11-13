@@ -1,9 +1,6 @@
 package com.habitual.demo.common.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +14,7 @@ import java.util.Date;
 @Getter
 @Setter
 @MappedSuperclass
+@EntityListeners(AuditListener.class)
 public class BaseEntity implements Serializable {
 
     /**
