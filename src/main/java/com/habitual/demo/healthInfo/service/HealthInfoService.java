@@ -9,7 +9,7 @@ import com.habitual.demo.healthInfo.entity.dto.HealthInfoPageDto;
  */
 public interface HealthInfoService {
 
-    CommonResponse save(HealthInfoEntity healthInfoEntity);
+    CommonResponse save(HealthInfoEntity input);
 
     CommonResponse delete(Long id);
 

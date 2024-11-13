@@ -24,33 +24,21 @@ public class HealthInfoServiceImpl implements HealthInfoService {
     private HealthInfoRepository healthInfoRepository;
 
     @Override
-    public CommonResponse save(HealthInfoEntity healthInfoEntity) {
-        try {
-            HealthInfoEntity savedEntity = healthInfoRepository.save(healthInfoEntity);
-            return CommonResponse.success(savedEntity);
-        } catch (Exception e) {
-            return CommonResponse.fail("保存失败: " + e.getMessage());
-        }
+    public CommonResponse save(HealthInfoEntity input) {
+        healthInfoRepository.save(input);
+        return CommonResponse.success("新增成功");
     }
 
     @Override
     public CommonResponse delete(Long id) {
-        try {
-            if (healthInfoRepository.existsById(id)) {
-                healthInfoRepository.deleteById(id);
-                return CommonResponse.success("删除成功");
-            } else {
-                return CommonResponse.fail("删除失败：未找到对应的记录");
-            }
-        } catch (Exception e) {
-            return CommonResponse.fail("删除失败：" + e.getMessage());
-        }
+        healthInfoRepository.deleteById(id);
+        return CommonResponse.success("删除成功");
     }
 
     @Override
     public CommonResponse selectByPage(HealthInfoPageDto input) {
         Pageable pageable = PageRequest.of(input.getPageNum()-1, input.getPageSize());
-        Page<HealthInfoEntity> result = healthInfoRepository.findByTitleAndType(input.getTitle(), input.getType(), pageable);
+        Page<HealthInfoEntity> result = healthInfoRepository.findByCriteria(input.getTitle(), input.getType(), pageable);
         return CommonResponse.success(result);
     }
 

@@ -25,8 +25,8 @@ public class HealthInfoController {
      * 新增/修改
      */
     @PostMapping("save")
-    public CommonResponse save(@RequestBody HealthInfoEntity healthInfoEntity) {
-        return healthInfoService.save(healthInfoEntity);
+    public CommonResponse save(@RequestBody HealthInfoEntity input) {
+        return healthInfoService.save(input);
     }
 
     /**

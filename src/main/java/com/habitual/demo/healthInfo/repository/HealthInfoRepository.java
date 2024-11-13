@@ -10,6 +10,6 @@ import org.springframework.data.repository.query.Param;
 public interface HealthInfoRepository extends JpaRepository<HealthInfoEntity, Long> {
 
     @Query("SELECT h FROM HealthInfoEntity h WHERE (:title IS NULL OR h.title = :title) AND (:type IS NULL OR h.type = :type)")
-    Page<HealthInfoEntity> findByTitleAndType(@Param("title") String title, @Param("type") String type, Pageable pageable);
+    Page<HealthInfoEntity> findByCriteria(@Param("title") String title, @Param("type") String type, Pageable pageable);
 
 }
