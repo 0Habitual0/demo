@@ -6,7 +6,6 @@ spring:
     url: jdbc:mysql://localhost:3306/demo?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
     username: root
     password: 123456
-
   jpa:
     open-in-view: false
     hibernate:
@@ -15,6 +14,14 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 server:
   port: 10100
+
+system:
+  custom:
+    jwtSecretKey: u7ydpT2P3eVf6W8xN9sKrG4tQ1vZw5bA6hXmJkCcRfM

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * 控制层 健康数据
  */
 @RestController
-@RequestMapping("/healthInfo")
+@RequestMapping("/healthData")
 public class HealthDataController {
 
     private static final Logger log = LoggerFactory.getLogger(HealthInfoController.class);

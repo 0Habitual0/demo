@@ -25,8 +25,8 @@ public class UserController {
      * 登录
      */
     @PostMapping("login")
-    public void login(@RequestBody UserEntity userEntity) {
-
+    public String login(@RequestBody UserEntity userEntity) {
+        return userService.login(userEntity.getUsername(), userEntity.getPassword());
     }
 
     /**

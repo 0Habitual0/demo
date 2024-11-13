@@ -1,6 +1,7 @@
 package com.habitual.demo.user.service.impl;
 
 import com.habitual.demo.common.entity.CommonResponse;
+import com.habitual.demo.common.utils.JwtTokenUtil;
 import com.habitual.demo.user.entity.UserEntity;
 import com.habitual.demo.user.entity.dto.UserPageDto;
 import com.habitual.demo.user.repository.UserRepository;
@@ -19,6 +20,14 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Override
+    public String login(String username, String password) {
+        return jwtTokenUtil.generateToken(username); //TODO
+    }
 
     @Override
     public CommonResponse save(UserEntity input) {
