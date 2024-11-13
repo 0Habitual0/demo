@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public CommonResponse save(UserEntity input) {
         userRepository.save(input);
-        return CommonResponse.success("新增成功");
+        return CommonResponse.success("保存成功");
     }
 
     @Override

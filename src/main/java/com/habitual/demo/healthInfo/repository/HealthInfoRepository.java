@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+/**
+ * 数据访问层JPA 健康资讯
+ */
 public interface HealthInfoRepository extends JpaRepository<HealthInfoEntity, Long> {
 
     @Query("SELECT h FROM HealthInfoEntity h WHERE (:title IS NULL OR h.title = :title) AND (:type IS NULL OR h.type = :type)")

@@ -26,7 +26,7 @@ public class HealthInfoServiceImpl implements HealthInfoService {
     @Override
     public CommonResponse save(HealthInfoEntity input) {
         healthInfoRepository.save(input);
-        return CommonResponse.success("新增成功");
+        return CommonResponse.success("保存成功");
     }
 
     @Override
