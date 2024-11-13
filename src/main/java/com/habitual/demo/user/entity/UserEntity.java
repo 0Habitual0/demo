@@ -39,6 +39,16 @@ public class UserEntity extends BaseEntity {
     private String nickName;
 
     /**
+     * 性别
+     */
+    private String sex;
+
+    /**
+     * 年龄
+     */
+    private Long age;
+
+    /**
      * 邮箱
      */
     private String email;
@@ -52,5 +62,10 @@ public class UserEntity extends BaseEntity {
      * 角色
      */
     private String role;
+
+    /**
+     * 状态 0禁用 1启用
+     */
+    private Long status;
 
 }

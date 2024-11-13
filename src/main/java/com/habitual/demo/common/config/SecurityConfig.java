@@ -11,6 +11,9 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * SpringSecurity配置类
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -24,7 +27,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-
                 .cors(AbstractHttpConfigurer::disable) // 禁用 CORS防护（跨域资源共享）
                 .csrf(AbstractHttpConfigurer::disable) // 禁用 CSRF防护（跨站请求伪造）
                 .authorizeHttpRequests(authorize -> authorize // HTTP 请求授权
