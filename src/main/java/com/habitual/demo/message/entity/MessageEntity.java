@@ -24,12 +24,12 @@ public class MessageEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 父留言id
+     * 父消息id
      */
     private Long parentId;
 
     /**
-     * 关联主键id
+     * 业务关联主键id
      */
     private Long relatedId;
 

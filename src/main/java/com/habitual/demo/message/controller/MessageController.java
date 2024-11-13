@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
  * 控制层 消息
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/message")
 public class MessageController {
 
     @Autowired

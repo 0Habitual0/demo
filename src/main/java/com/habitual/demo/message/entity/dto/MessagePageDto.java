@@ -7,4 +7,14 @@ import lombok.Setter;
 @Setter
 public class MessagePageDto {
 
+    private Long relatedId;
+
+    private Long userId;
+
+    private String type;
+
+    private int pageNum;
+
+    private int pageSize;
+
 }
