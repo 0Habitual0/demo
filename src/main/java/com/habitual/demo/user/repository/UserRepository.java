@@ -12,6 +12,8 @@ import org.springframework.data.repository.query.Param;
  */
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
+    UserEntity findByUsername(String userName);
+
     @Query("SELECT u FROM UserEntity u WHERE " +
             "(:username IS NULL OR u.username = :username) AND " +
             "(:nickName IS NULL OR u.nickName = :nickName) AND " +

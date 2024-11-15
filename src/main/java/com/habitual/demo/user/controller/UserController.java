@@ -25,16 +25,26 @@ public class UserController {
      * 登录
      */
     @PostMapping("login")
-    public String login(@RequestBody UserEntity userEntity) {
+    public CommonResponse login(@RequestBody UserEntity userEntity) {
         return userService.login(userEntity.getUsername(), userEntity.getPassword());
+    }
+
+    /**
+     * 获取用户信息
+     */
+    @GetMapping("info")
+    public CommonResponse info() {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername("管理员");
+        return CommonResponse.success(userEntity);
     }
 
     /**
      * 登出
      */
     @PostMapping("logout")
-    public void logout(@RequestBody UserEntity userEntity) {
-
+    public void logout() {
+        userService.logout();
     }
 
     /**

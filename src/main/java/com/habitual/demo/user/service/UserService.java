@@ -9,7 +9,9 @@ import com.habitual.demo.user.entity.dto.UserPageDto;
  */
 public interface UserService {
 
-    String login(String username, String password);
+    CommonResponse login(String username, String password);
+
+    void logout();
 
     CommonResponse save(UserEntity input);
 

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -62,10 +64,13 @@ public class JwtTokenUtil {
         return null;
     }
 
-    private String validateTokenFake(String token) {
-        return "fakeUser";
+    // 注销令牌
+    public void deleteToken() {
+        // 从 Redis 中删除令牌
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getName() != null) {
+            redisTemplate.delete(authentication.getName());
+        }
     }
 
 }
-
-

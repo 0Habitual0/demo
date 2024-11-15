@@ -28,7 +28,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String token = request.getHeader("Token");
+        String token = request.getHeader("X-Token");
         String username = jwtTokenUtil.validateToken(token);
         if (username != null) {
             Authentication authentication = getAuthentication(username);

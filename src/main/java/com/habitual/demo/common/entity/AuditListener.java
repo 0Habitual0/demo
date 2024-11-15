@@ -2,6 +2,8 @@ package com.habitual.demo.common.entity;
 
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Date;
 
@@ -23,7 +25,11 @@ public class AuditListener {
     }
 
     private String getCurrentUser() {
-        return "current_user"; // 替换为实际实现 TODO
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getName() != null) {
+            return authentication.getName();
+        }
+        return null;
     }
 
 }
