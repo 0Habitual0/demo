@@ -6,10 +6,12 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.core.Authentication;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -61,45 +64,59 @@ public class JwtTokenUtil {
         if (token == null || token.isEmpty()) {
             return null;
         }
+        String username = validateJwtToken(token);
+        if (!username.isEmpty() && validateRedisToken(username, token)) {
+            return username;
+        }
+        return null;
+    }
 
-        // Jwt判断逻辑
-        Claims claims = null;
+    // Jwt判断逻辑
+    public String validateJwtToken(String token) {
         try {
-            claims = Jwts.parserBuilder()
+            Claims claims = Jwts.parserBuilder()
                     .setSigningKey(getSigningKey())
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
+            return claims.getSubject();
         } catch (ExpiredJwtException e) {
             // 处理token过期异常
             throw new TokenValidationException("Token has expired", 50014);
+        } catch (SignatureException e) {
+            // 处理token签名异常
+            throw new TokenValidationException("Invalid token signature", 50008);
         } catch (Exception e) {
             // 处理其他非法token异常
             throw new TokenValidationException("Illegal token", 50008);
         }
+    }
 
-        // Redis判断逻辑
-        String username = claims.getSubject();
-        ValueOperations<String, String> ops = redisTemplate.opsForValue();
-        // 检查token是否存在
-        Boolean hasKey = redisTemplate.hasKey(username);
-        if (Boolean.FALSE.equals(hasKey)) {
-            throw new TokenValidationException("Token not found", 50008); // Token不存在
-        }
+    // Redis判断逻辑
+    public Boolean validateRedisToken(String username, String token) {
+        // 使用MGET和getExpire组合命令，减少一次性获取多个键的值
+        List<Object> results = redisTemplate.executePipelined((RedisCallback<Object>) connection -> {
+            connection.keyCommands().ttl(username.getBytes()); // 获取剩余存活时间
+            connection.stringCommands().get(username.getBytes()); // 获取存储的token
+            return null;
+        });
+
+        // 解析结果
+        Long expireTime = (Long) results.get(0);
+        String storedToken = (String) results.get(1);
+
         // 检查token的剩余存活时间
-        Long expireTime = redisTemplate.getExpire(username, TimeUnit.SECONDS);
-        if (expireTime != null && expireTime <= 0) {
-            throw new TokenValidationException("Token has expired", 50014); // Token已过期
+        if (expireTime == null || expireTime == -2) {
+            throw new TokenValidationException("Invalid token", 50014); // 失效的token
         }
-        String storedToken = ops.get(username);
+        if (!token.equals(storedToken)) {
+            throw new TokenValidationException("Illegal token", 50008); // 非法token
+        }
 
-        // token验证通过
-        if (token.equals(storedToken)) {
-            // 续期：延长令牌在 Redis 中的过期时间
-            ops.set(username, token, 10, TimeUnit.MINUTES); // 重新设置 10分钟有效期
-            return username;
-        }
-        return null;
+        // token验证通过且未过期 续期：延长令牌在 Redis 中的过期时间
+        ValueOperations<String, String> ops = redisTemplate.opsForValue();
+        ops.set(username, token, 10, TimeUnit.MINUTES); // 重新设置 10分钟有效期
+        return true;
     }
 
     // 注销令牌

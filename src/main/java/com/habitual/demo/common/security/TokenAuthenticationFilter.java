@@ -12,12 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Token身份验证过滤器类
@@ -28,6 +31,13 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+    private SessionRegistry sessionRegistry;
+
+    @Autowired
+    public void setSessionRegistry(SessionRegistry sessionRegistry) {
+        this.sessionRegistry = sessionRegistry;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = request.getHeader("X-Token");
@@ -35,6 +45,10 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         try {
             String username = jwtTokenUtil.validateToken(token);
             if (username != null) {
+                // 检查是否有其他活跃的会话
+                if (isUserAlreadyLoggedIn(username)) {
+                    throw new TokenValidationException("当前用户在线，无法登录", 50012);
+                }
                 Authentication authentication = getAuthentication(username);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
@@ -43,6 +57,20 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         filterChain.doFilter(request, response);
+    }
+
+    // 检查用户是否已经登录
+    private boolean isUserAlreadyLoggedIn(String username) {
+        List<Object> allPrincipals = sessionRegistry.getAllPrincipals();
+        for (Object principal : allPrincipals) {
+            if (principal instanceof UserDetails) {
+                UserDetails userDetails = (UserDetails) principal;
+                if (userDetails.getUsername().equals(username)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private Authentication getAuthentication(String username) {

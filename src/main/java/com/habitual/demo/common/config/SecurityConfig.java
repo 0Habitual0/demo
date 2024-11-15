@@ -19,10 +19,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final TokenAuthenticationFilter tokenAuthenticationFilter;
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();
+    }
 
-    public SecurityConfig(TokenAuthenticationFilter tokenAuthenticationFilter) {
-        this.tokenAuthenticationFilter = tokenAuthenticationFilter;
+    @Bean
+    public TokenAuthenticationFilter tokenAuthenticationFilter() {
+        return new TokenAuthenticationFilter();
     }
 
     @Bean
@@ -40,13 +44,8 @@ public class SecurityConfig {
                         .maxSessionsPreventsLogin(true) // false表示后登录的用户会顶掉先登录的用户
                         .sessionRegistry(sessionRegistry())
                 )
-                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
-    }
-
-    @Bean
-    public SessionRegistry sessionRegistry() {
-        return new SessionRegistryImpl();
     }
 
 }
