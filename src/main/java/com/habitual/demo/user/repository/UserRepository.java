@@ -12,6 +12,8 @@ import org.springframework.data.repository.query.Param;
  */
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
+    Boolean existsByUsernameAndPassword(String userName, String password);
+
     UserEntity findByUsername(String userName);
 
     @Query("SELECT u FROM UserEntity u WHERE " +

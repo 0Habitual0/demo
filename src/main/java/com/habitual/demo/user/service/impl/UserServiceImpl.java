@@ -28,7 +28,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CommonResponse login(String username, String password) {
-        return CommonResponse.success(jwtTokenUtil.generateToken(username)); //TODO
+        Boolean isLogin = userRepository.existsByUsernameAndPassword(username, password);
+        if (isLogin) {
+            return CommonResponse.success(jwtTokenUtil.generateToken(username));
+        } else {
+            return CommonResponse.fail("用户名或密码错误");
+        }
     }
 
     @Override
@@ -44,7 +49,6 @@ public class UserServiceImpl implements UserService {
         userEntity.setUsername(username);
         return CommonResponse.success(userEntity);
     }
-
 
     @Override
     public CommonResponse logout() {
