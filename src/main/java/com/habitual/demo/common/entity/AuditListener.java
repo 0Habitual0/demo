@@ -29,7 +29,7 @@ public class AuditListener {
         if (authentication != null && authentication.getName() != null) {
             return authentication.getName();
         }
-        return null;
+        return "未知用户";
     }
 
 }

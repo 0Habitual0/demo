@@ -41,8 +41,8 @@ public class UserController {
      * 登出
      */
     @PostMapping("logout")
-    public void logout() {
-        userService.logout();
+    public CommonResponse logout() {
+        return userService.logout();
     }
 
     /**

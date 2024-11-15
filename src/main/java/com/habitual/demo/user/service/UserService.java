@@ -13,7 +13,7 @@ public interface UserService {
 
     CommonResponse info();
 
-    void logout();
+    CommonResponse logout();
 
     CommonResponse save(UserEntity input);
 

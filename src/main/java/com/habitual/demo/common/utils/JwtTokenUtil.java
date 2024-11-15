@@ -4,7 +4,6 @@ import com.habitual.demo.common.exception.TokenValidationException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -44,7 +43,7 @@ public class JwtTokenUtil {
         return token;
     }
 
-    // 验证令牌，并在验证成功时续期
+    // 验证令牌，并在验证成功时续期 TODO 增加认证 token 过期等逻辑
     public String validateToken(String token) {
         if (token == null || token.isEmpty()) {
             return null;
@@ -56,6 +55,7 @@ public class JwtTokenUtil {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (Exception e) {
+            // 配合前端使用的状态码
             throw new TokenValidationException("Illegal token", 50008);
         }
 

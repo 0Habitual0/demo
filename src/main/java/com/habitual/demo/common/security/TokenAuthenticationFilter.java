@@ -39,7 +39,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (TokenValidationException ex) {
-            handleException(response, ex);
+            handleTokenValidationException(response, ex);
+            return;
         }
         filterChain.doFilter(request, response);
     }
@@ -53,7 +54,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         );
     }
 
-    private void handleException(HttpServletResponse response, TokenValidationException ex) throws IOException {
+    // 处理异常，返回自定义信息
+    private void handleTokenValidationException(HttpServletResponse response, TokenValidationException ex) throws IOException {
         // 设置响应状态码
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         // 设置响应内容类型

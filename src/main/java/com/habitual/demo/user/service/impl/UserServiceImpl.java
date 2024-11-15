@@ -47,8 +47,9 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void logout() {
+    public CommonResponse logout() {
         jwtTokenUtil.deleteToken();
+        return CommonResponse.success(null);
     }
 
     @Override

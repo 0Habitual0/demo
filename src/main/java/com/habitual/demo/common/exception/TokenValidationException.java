@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class TokenValidationException extends RuntimeException {
 
-    private Integer errorCode;
+    private final Integer errorCode;
 
     public TokenValidationException(String message, Integer errorCode) {
         super(message);
