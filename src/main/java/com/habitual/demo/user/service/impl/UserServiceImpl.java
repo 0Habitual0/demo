@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,6 +30,21 @@ public class UserServiceImpl implements UserService {
     public CommonResponse login(String username, String password) {
         return CommonResponse.success(jwtTokenUtil.generateToken(username)); //TODO
     }
+
+    @Override
+    public CommonResponse info() {
+        String username = null;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && authentication.getName() != null) {
+            username = authentication.getName();
+        } else {
+            return CommonResponse.fail("用户未认证或用户名为空");
+        }
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername(username);
+        return CommonResponse.success(userEntity);
+    }
+
 
     @Override
     public void logout() {

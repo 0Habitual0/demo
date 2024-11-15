@@ -11,6 +11,8 @@ public interface UserService {
 
     CommonResponse login(String username, String password);
 
+    CommonResponse info();
+
     void logout();
 
     CommonResponse save(UserEntity input);

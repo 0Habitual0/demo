@@ -1,8 +1,10 @@
 package com.habitual.demo.common.utils;
 
+import com.habitual.demo.common.exception.TokenValidationException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -47,10 +49,16 @@ public class JwtTokenUtil {
         if (token == null || token.isEmpty()) {
             return null;
         }
-        Claims claims = Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token)
-                .getBody();
+        Claims claims = null;
+        try {
+            claims = Jwts.parser()
+                    .setSigningKey(SECRET_KEY)
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
+            throw new TokenValidationException("Illegal token", 50008);
+        }
+
         String username = claims.getSubject();
 
         ValueOperations<String, String> ops = redisTemplate.opsForValue();

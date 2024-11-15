@@ -34,9 +34,7 @@ public class UserController {
      */
     @GetMapping("info")
     public CommonResponse info() {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUsername("管理员");
-        return CommonResponse.success(userEntity);
+        return userService.info();
     }
 
     /**
