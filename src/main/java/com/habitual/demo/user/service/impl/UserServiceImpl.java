@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     public CommonResponse login(String username, String password) {
         Boolean isLogin = userRepository.existsByUsernameAndPassword(username, password);
         if (isLogin) {
-            return CommonResponse.success(jwtTokenUtil.generateToken(username));
+            return CommonResponse.success(jwtTokenUtil.getToken(username));
         } else {
             return CommonResponse.fail("用户名或密码错误");
         }

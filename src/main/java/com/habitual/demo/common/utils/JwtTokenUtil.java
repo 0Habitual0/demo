@@ -42,6 +42,19 @@ public class JwtTokenUtil {
         this.signingKey = Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
+    // 获取用户 JWT 令牌
+    public String getToken(String username) {
+        ValueOperations<String, String> ops = redisTemplate.opsForValue();
+        String existingToken = ops.get(username);
+        // 如果已有令牌则续期
+        if (existingToken != null) {
+            ops.set(username, existingToken, 10, TimeUnit.MINUTES); // 重新设置 10分钟有效期
+            return existingToken;
+        } else {
+            return generateToken(username);
+        }
+    }
+
     // 生成不带过期时间的 JWT 令牌
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
@@ -82,13 +95,13 @@ public class JwtTokenUtil {
             return claims.getSubject();
         } catch (ExpiredJwtException e) {
             // 处理token过期异常
-            throw new TokenValidationException("Token has expired", 50014);
+            throw new TokenValidationException("您的会话已过期，请重新登陆", 50014);
         } catch (SignatureException e) {
             // 处理token签名异常
-            throw new TokenValidationException("Invalid token signature", 50008);
+            throw new TokenValidationException("您的请求包含非法的令牌。请重新登录", 50008);
         } catch (Exception e) {
             // 处理其他非法token异常
-            throw new TokenValidationException("Illegal token", 50008);
+            throw new TokenValidationException("您的请求包含非法的令牌。请重新登录", 50008);
         }
     }
 
@@ -107,10 +120,10 @@ public class JwtTokenUtil {
 
         // 检查token的剩余存活时间
         if (expireTime == null || expireTime == -2) {
-            throw new TokenValidationException("Invalid token", 50014); // 失效的token
+            throw new TokenValidationException("您的会话已过期，请重新登陆", 50014);
         }
         if (!token.equals(storedToken)) {
-            throw new TokenValidationException("Illegal token", 50008); // 非法token
+            throw new TokenValidationException("您的请求包含非法的令牌。请重新登录", 50008);
         }
 
         // token验证通过且未过期 续期：延长令牌在 Redis 中的过期时间
