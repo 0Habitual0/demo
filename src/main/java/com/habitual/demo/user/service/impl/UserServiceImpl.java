@@ -10,9 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 /**
  * 业务层实现 用户
@@ -61,7 +64,7 @@ public class UserServiceImpl implements UserService {
         // 检查用户名是否重复
         UserEntity existingUser = userRepository.findByUsername(input.getUsername());
 
-        if (existingUser != null && !existingUser.getId().equals(input.getId())) {
+        if (existingUser != null && !Objects.equals(existingUser.getId(), input.getId())) {
             return CommonResponse.fail("用户名已存在");
         }
         userRepository.save(input);
@@ -88,7 +91,7 @@ public class UserServiceImpl implements UserService {
                 input.getRole(),
                 input.getStatus(),
                 pageable);
-        return CommonResponse.success(result);
+        return CommonResponse.success(new PagedModel<>(result));
     }
 
 }

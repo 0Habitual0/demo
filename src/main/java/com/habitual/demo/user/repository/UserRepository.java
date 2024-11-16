@@ -17,12 +17,12 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     UserEntity findByUsername(String userName);
 
     @Query("SELECT u FROM UserEntity u WHERE " +
-            "(:username IS NULL OR u.username = :username) AND " +
-            "(:nickName IS NULL OR u.nickName = :nickName) AND " +
+            "(:username IS NULL OR u.username LIKE %:username%) AND " +
+            "(:nickName IS NULL OR u.nickName LIKE %:nickName%) AND " +
             "(:sex IS NULL OR u.sex = :sex) AND " +
             "(:age IS NULL OR u.age = :age) AND " +
-            "(:email IS NULL OR u.email = :email) AND " +
-            "(:tel IS NULL OR u.tel = :tel) AND " +
+            "(:email IS NULL OR u.email LIKE %:email%) AND " +
+            "(:tel IS NULL OR u.tel LIKE %:tel%) AND " +
             "(:role IS NULL OR u.role = :role) AND " +
             "(:status IS NULL OR u.status = :status)")
     Page<UserEntity> findByCriteria(@Param("username") String username,
