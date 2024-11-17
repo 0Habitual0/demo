@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CommonResponse retrievePassword(UserEntity input) {
+    public CommonResponse recoverPassword(UserEntity input) {
         UserEntity existingUser = userRepository.findByUsername(input.getUsername());
         if (existingUser == null) {
             return CommonResponse.fail("账号不存在");
@@ -139,6 +139,9 @@ public class UserServiceImpl implements UserService {
                 input.getTel(),
                 input.getRole(),
                 input.getStatus(),
+                input.getCreateBy(),
+                input.getUpdateBy(),
+                input.getRemark(),
                 pageable);
         result.forEach(user -> user.setPassword(null));
         return CommonResponse.success(new PagedModel<>(result));

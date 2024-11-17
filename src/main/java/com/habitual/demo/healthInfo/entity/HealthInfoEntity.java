@@ -29,6 +29,11 @@ public class HealthInfoEntity extends BaseEntity {
     private String title;
 
     /**
+     * 标题图片
+     */
+    private String titleImage;
+
+    /**
      * 内容
      */
     private String content;

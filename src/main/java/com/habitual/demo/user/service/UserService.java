@@ -12,7 +12,7 @@ public interface UserService {
 
     CommonResponse register(UserEntity input);
 
-    CommonResponse retrievePassword(UserEntity input);
+    CommonResponse recoverPassword(UserEntity input);
 
     CommonResponse changePassword(UserChangePasswordDto input);
 

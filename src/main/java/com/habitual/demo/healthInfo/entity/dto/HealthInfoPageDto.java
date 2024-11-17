@@ -11,6 +11,12 @@ public class HealthInfoPageDto {
 
     private String type;
 
+    private String createBy;
+
+    private String updateBy;
+
+    private String remark;
+
     private int pageNum;
 
     private int pageSize;

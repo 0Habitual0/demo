@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
 /**
@@ -38,8 +39,14 @@ public class HealthInfoServiceImpl implements HealthInfoService {
     @Override
     public CommonResponse selectByPage(HealthInfoPageDto input) {
         Pageable pageable = PageRequest.of(input.getPageNum()-1, input.getPageSize());
-        Page<HealthInfoEntity> result = healthInfoRepository.findByCriteria(input.getTitle(), input.getType(), pageable);
-        return CommonResponse.success(result);
+        Page<HealthInfoEntity> result = healthInfoRepository.findByCriteria(
+                input.getTitle(),
+                input.getType(),
+                input.getCreateBy(),
+                input.getUpdateBy(),
+                input.getRemark(),
+                pageable);
+        return CommonResponse.success(new PagedModel<>(result));
     }
 
 }

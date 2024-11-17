@@ -33,9 +33,9 @@ public class UserController {
     /**
      * 找回密码
      */
-    @PostMapping("retrievePassword")
-    public CommonResponse retrievePassword(@RequestBody UserEntity userEntity) {
-        return userService.retrievePassword(userEntity);
+    @PostMapping("recoverPassword")
+    public CommonResponse recoverPassword(@RequestBody UserEntity userEntity) {
+        return userService.recoverPassword(userEntity);
     }
 
     /**

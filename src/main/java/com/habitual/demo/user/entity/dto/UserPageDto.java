@@ -23,6 +23,12 @@ public class UserPageDto {
 
     private Long status;
 
+    private String createBy;
+
+    private String updateBy;
+
+    private String remark;
+
     private int pageNum;
 
     private int pageSize;

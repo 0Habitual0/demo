@@ -24,7 +24,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
             "(:email IS NULL OR u.email LIKE %:email%) AND " +
             "(:tel IS NULL OR u.tel LIKE %:tel%) AND " +
             "(:role IS NULL OR u.role = :role) AND " +
-            "(:status IS NULL OR u.status = :status)")
+            "(:status IS NULL OR u.status = :status) AND" +
+            "(:createBy IS NULL OR u.createBy LIKE %:createBy%) AND" +
+            "(:updateBy IS NULL OR u.updateBy LIKE %:updateBy%) AND" +
+            "(:remark IS NULL OR u.remark LIKE %:remark%)")
     Page<UserEntity> findByCriteria(@Param("username") String username,
                                     @Param("nickName") String nickName,
                                     @Param("sex") String sex,
@@ -33,5 +36,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
                                     @Param("tel") String tel,
                                     @Param("role") String role,
                                     @Param("status") Long status,
+                                    @Param("createBy") String createBy,
+                                    @Param("updateBy") String updateBy,
+                                    @Param("remark") String remark,
                                     Pageable pageable);
 }
