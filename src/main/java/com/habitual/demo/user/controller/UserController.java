@@ -2,6 +2,7 @@ package com.habitual.demo.user.controller;
 
 import com.habitual.demo.common.entity.CommonResponse;
 import com.habitual.demo.user.entity.UserEntity;
+import com.habitual.demo.user.entity.dto.UserChangePasswordDto;
 import com.habitual.demo.user.entity.dto.UserPageDto;
 import com.habitual.demo.user.service.UserService;
 import org.slf4j.Logger;
@@ -20,6 +21,30 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    /**
+     * 注册
+     */
+    @PostMapping("register")
+    public CommonResponse register(@RequestBody UserEntity userEntity) {
+        return userService.register(userEntity);
+    }
+
+    /**
+     * 找回密码
+     */
+    @PostMapping("retrievePassword")
+    public CommonResponse retrievePassword(@RequestBody UserEntity userEntity) {
+        return userService.retrievePassword(userEntity);
+    }
+
+    /**
+     * 修改密码
+     */
+    @PostMapping("changePassword")
+    public CommonResponse changePassword(@RequestBody UserChangePasswordDto userEntity) {
+        return userService.changePassword(userEntity);
+    }
 
     /**
      * 登录

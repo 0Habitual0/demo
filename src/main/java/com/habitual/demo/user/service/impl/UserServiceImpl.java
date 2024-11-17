@@ -3,6 +3,7 @@ package com.habitual.demo.user.service.impl;
 import com.habitual.demo.common.entity.CommonResponse;
 import com.habitual.demo.common.utils.JwtTokenUtil;
 import com.habitual.demo.user.entity.UserEntity;
+import com.habitual.demo.user.entity.dto.UserChangePasswordDto;
 import com.habitual.demo.user.entity.dto.UserInfoDto;
 import com.habitual.demo.user.entity.dto.UserPageDto;
 import com.habitual.demo.user.repository.UserRepository;
@@ -29,6 +30,48 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
+    @Override
+    public CommonResponse register(UserEntity input) {
+        // 检查登录账号是否重复
+        UserEntity existingUser = userRepository.findByUsername(input.getUsername());
+        if (existingUser != null) {
+            return CommonResponse.fail("登录账号已存在");
+        }
+        input.setId(null);
+        userRepository.save(input);
+        return CommonResponse.success("注册成功");
+    }
+
+    @Override
+    public CommonResponse retrievePassword(UserEntity input) {
+        UserEntity existingUser = userRepository.findByUsername(input.getUsername());
+        if (existingUser == null) {
+            return CommonResponse.fail("账号不存在");
+        }
+        if (Objects.equals(existingUser.getEmail(), input.getEmail())) {
+            existingUser.setPassword(input.getPassword());
+            userRepository.save(existingUser);
+            return CommonResponse.success("修改成功");
+        } else {
+            return CommonResponse.fail("邮箱不正确");
+        }
+    }
+
+    @Override
+    public CommonResponse changePassword(UserChangePasswordDto input) {
+        UserEntity existingUser = userRepository.findByUsername(input.getUsername());
+        if (existingUser == null) {
+            return CommonResponse.fail("账号不存在");
+        }
+        if (Objects.equals(existingUser.getPassword(), input.getOldPassword())) {
+            existingUser.setPassword(input.getNewPassword());
+            userRepository.save(existingUser);
+            return CommonResponse.success("修改成功");
+        } else {
+            return CommonResponse.fail("旧密码不正确");
+        }
+    }
 
     @Override
     public CommonResponse login(String username, String password) {

@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable) // 禁用 CORS防护（跨域资源共享）
                 .csrf(AbstractHttpConfigurer::disable) // 禁用 CSRF防护（跨站请求伪造）
                 .authorizeHttpRequests(authorize -> authorize // HTTP 请求授权
-                        .requestMatchers(HttpMethod.POST, "/user/login")
+                        .requestMatchers(HttpMethod.POST, "/user/login", "/user/register", "/user/retrievePassword")
                         .permitAll() // 允许路径的请求不进行身份验证
                         .anyRequest().authenticated() // 其他所有请求都需要身份验证
                 )
