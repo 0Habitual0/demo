@@ -3,6 +3,7 @@ package com.habitual.demo.user.service.impl;
 import com.habitual.demo.common.entity.CommonResponse;
 import com.habitual.demo.common.utils.JwtTokenUtil;
 import com.habitual.demo.user.entity.UserEntity;
+import com.habitual.demo.user.entity.dto.UserInfoDto;
 import com.habitual.demo.user.entity.dto.UserPageDto;
 import com.habitual.demo.user.repository.UserRepository;
 import com.habitual.demo.user.service.UserService;
@@ -31,11 +32,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CommonResponse login(String username, String password) {
-        Boolean isLogin = userRepository.existsByUsernameAndPassword(username, password);
-        if (isLogin) {
+        UserEntity userEntity = userRepository.findByUsernameAndPassword(username, password);
+        if (userEntity != null && Objects.equals(userEntity.getStatus(), 1L)) {
             return CommonResponse.success(jwtTokenUtil.getToken(username));
-        } else {
+        } else if (userEntity == null) {
             return CommonResponse.fail("用户名或密码错误");
+        } else {
+            return CommonResponse.fail("账户已被禁用，请联系管理员");
         }
     }
 
@@ -48,9 +51,10 @@ public class UserServiceImpl implements UserService {
         } else {
             return CommonResponse.fail("用户未认证或用户名为空");
         }
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUsername(username);
-        return CommonResponse.success(userEntity);
+        UserInfoDto info = new UserInfoDto();
+        info.setUsername(username);
+        info.setAvatar("https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
+        return CommonResponse.success(info);
     }
 
     @Override
@@ -61,16 +65,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CommonResponse save(UserEntity input) {
-        // 检查用户名是否重复
+        // 检查登录账号是否重复
         UserEntity existingUser = userRepository.findByUsername(input.getUsername());
-
         if (existingUser != null && !Objects.equals(existingUser.getId(), input.getId())) {
-            return CommonResponse.fail("用户名已存在");
+            return CommonResponse.fail("登录账号已存在");
+        }
+        if (input.getId() != null) {
+            // 更新操作时不插入密码
+            userRepository.findById(input.getId()).ifPresent(userToUpdate -> input.setPassword(userToUpdate.getPassword()));
         }
         userRepository.save(input);
         return CommonResponse.success("保存成功");
     }
-
 
     @Override
     public CommonResponse delete(Long id) {
@@ -80,7 +86,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CommonResponse selectByPage(UserPageDto input) {
-        Pageable pageable = PageRequest.of(input.getPageNum()-1, input.getPageSize());
+        Pageable pageable = PageRequest.of(input.getPageNum() - 1, input.getPageSize());
         Page<UserEntity> result = userRepository.findByCriteria(
                 input.getUsername(),
                 input.getNickName(),
@@ -91,6 +97,7 @@ public class UserServiceImpl implements UserService {
                 input.getRole(),
                 input.getStatus(),
                 pageable);
+        result.forEach(user -> user.setPassword(null));
         return CommonResponse.success(new PagedModel<>(result));
     }
 

@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param;
  */
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    Boolean existsByUsernameAndPassword(String userName, String password);
+    UserEntity findByUsernameAndPassword(String userName, String password);
 
     UserEntity findByUsername(String userName);
 
@@ -34,5 +34,4 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
                                     @Param("role") String role,
                                     @Param("status") Long status,
                                     Pageable pageable);
-
 }
