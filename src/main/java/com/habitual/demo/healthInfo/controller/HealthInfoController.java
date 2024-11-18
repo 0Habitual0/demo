@@ -45,4 +45,20 @@ public class HealthInfoController {
         return healthInfoService.selectByPage(input);
     }
 
+    /**
+     * 分页查询 用户收藏
+     */
+    @PostMapping("selectByPageCollect")
+    public CommonResponse selectByPageCollect(@RequestBody HealthInfoPageDto input) {
+        return healthInfoService.selectByPageCollect(input);
+    }
+
+    /**
+     * 查询最新五条
+     */
+    @GetMapping("selectLatest")
+    public CommonResponse selectLatest(String type) {
+        return healthInfoService.selectLatest(type);
+    }
+
 }

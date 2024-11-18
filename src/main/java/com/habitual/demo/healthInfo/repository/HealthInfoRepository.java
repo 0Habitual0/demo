@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 /**
  * 数据访问层JPA 健康资讯
  */
@@ -24,5 +26,10 @@ public interface HealthInfoRepository extends JpaRepository<HealthInfoEntity, Lo
                                           @Param("updateBy") String updateBy,
                                           @Param("remark") String remark,
                                           Pageable pageable);
+
+
+    Page<HealthInfoEntity> findByIdIn(List<Long> userIds, Pageable pageable);
+
+    List<HealthInfoEntity> findTop5ByTypeOrderByCreateTimeDesc(String type);
 
 }
