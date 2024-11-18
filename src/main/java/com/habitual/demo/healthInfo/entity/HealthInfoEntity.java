@@ -10,7 +10,7 @@ import lombok.Setter;
 import java.io.Serial;
 
 /**
- * 实体类 健康咨询
+ * 实体类 健康资讯
  */
 @Getter
 @Setter

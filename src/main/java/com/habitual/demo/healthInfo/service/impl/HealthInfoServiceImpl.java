@@ -4,6 +4,7 @@ import com.habitual.demo.common.entity.CommonResponse;
 import com.habitual.demo.healthInfo.controller.HealthInfoController;
 import com.habitual.demo.healthInfo.entity.HealthInfoEntity;
 import com.habitual.demo.healthInfo.entity.dto.HealthInfoPageDto;
+import com.habitual.demo.healthInfo.repository.HealthInfoCollectRepository;
 import com.habitual.demo.healthInfo.repository.HealthInfoRepository;
 import com.habitual.demo.healthInfo.service.HealthInfoService;
 import org.slf4j.Logger;
@@ -23,6 +24,9 @@ public class HealthInfoServiceImpl implements HealthInfoService {
 
     @Autowired
     private HealthInfoRepository healthInfoRepository;
+
+    @Autowired
+    private HealthInfoCollectRepository healthInfoCollectRepository;
 
     @Override
     public CommonResponse save(HealthInfoEntity input) {
