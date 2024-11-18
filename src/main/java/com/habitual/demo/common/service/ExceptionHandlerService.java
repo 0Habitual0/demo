@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * 异常处理实现
+ */
 @Service
 public class ExceptionHandlerService {
 

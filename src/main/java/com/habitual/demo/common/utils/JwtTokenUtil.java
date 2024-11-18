@@ -25,6 +25,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * JwtToken工具类
+ */
 @Component
 public class JwtTokenUtil {
 

@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.Collections;
 
 /**
- * Token身份验证过滤器类
+ * Token身份验证过滤器
  */
 @Component
 public class TokenAuthenticationFilter extends OncePerRequestFilter {

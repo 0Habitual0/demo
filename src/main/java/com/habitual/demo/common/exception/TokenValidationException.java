@@ -2,6 +2,9 @@ package com.habitual.demo.common.exception;
 
 import lombok.Getter;
 
+/**
+ * Token验证异常
+ */
 @Getter
 public class TokenValidationException extends RuntimeException {
 

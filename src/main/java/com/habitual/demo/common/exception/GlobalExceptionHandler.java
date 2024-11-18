@@ -9,6 +9,9 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.io.IOException;
 
+/**
+ * 全局异常处理器，对过滤器无效
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
