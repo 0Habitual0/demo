@@ -20,6 +20,6 @@ public interface HealthInfoService {
 
     CommonResponse selectByPageCollect(HealthInfoPageDto input);
 
-    CommonResponse selectLatest(String type);
+    CommonResponse selectLatest();
 
 }

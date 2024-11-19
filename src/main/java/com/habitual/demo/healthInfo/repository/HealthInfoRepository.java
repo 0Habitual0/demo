@@ -30,6 +30,6 @@ public interface HealthInfoRepository extends JpaRepository<HealthInfoEntity, Lo
 
     Page<HealthInfoEntity> findByIdIn(List<Long> userIds, Pageable pageable);
 
-    List<HealthInfoEntity> findTop5ByTypeOrderByCreateTimeDesc(String type);
+    List<HealthInfoEntity> findTop5ByOrderByCreateTimeDesc();
 
 }

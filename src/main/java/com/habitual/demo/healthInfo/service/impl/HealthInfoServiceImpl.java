@@ -79,8 +79,8 @@ public class HealthInfoServiceImpl implements HealthInfoService {
     }
 
     @Override
-    public CommonResponse selectLatest(String type) {
-        List<HealthInfoEntity> result = healthInfoRepository.findTop5ByTypeOrderByCreateTimeDesc(type);
+    public CommonResponse selectLatest() {
+        List<HealthInfoEntity> result = healthInfoRepository.findTop5ByOrderByCreateTimeDesc();
         return CommonResponse.success(result);
     }
 

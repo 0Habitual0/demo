@@ -57,8 +57,8 @@ public class HealthInfoController {
      * 查询最新五条
      */
     @GetMapping("selectLatest")
-    public CommonResponse selectLatest(String type) {
-        return healthInfoService.selectLatest(type);
+    public CommonResponse selectLatest() {
+        return healthInfoService.selectLatest();
     }
 
 }
