@@ -4,11 +4,8 @@ import com.habitual.demo.common.entity.CommonResponse;
 import com.habitual.demo.healthData.entity.HealthDataEntity;
 import com.habitual.demo.healthData.repository.HealthDataRepository;
 import com.habitual.demo.healthData.service.HealthDataService;
-import com.habitual.demo.healthInfo.entity.HealthInfoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.io.LineNumberReader;
 
 /**
  * 业务层实现 健康数据

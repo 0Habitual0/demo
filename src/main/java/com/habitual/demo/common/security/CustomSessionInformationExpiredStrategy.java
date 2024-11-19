@@ -5,7 +5,6 @@ import com.habitual.demo.common.service.ExceptionHandlerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.session.SessionInformationExpiredEvent;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
@@ -13,7 +12,6 @@ import java.io.IOException;
  * 前提：Session 并发处理的配置为 maxSessionsPreventsLogin(false)
  * 用户的并发 Session 会话数量达到上限，新会话登录后，最老会话会在下一次请求中失效，并执行此策略
  */
-@Component
 public class CustomSessionInformationExpiredStrategy implements SessionInformationExpiredStrategy {
 
     @Autowired

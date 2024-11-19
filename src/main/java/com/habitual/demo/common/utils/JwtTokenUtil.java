@@ -1,6 +1,7 @@
 package com.habitual.demo.common.utils;
 
 import com.habitual.demo.common.exception.TokenValidationException;
+import com.habitual.demo.common.security.UserContext;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -14,8 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -137,11 +136,8 @@ public class JwtTokenUtil {
 
     // 注销令牌
     public void deleteToken() {
-        // 从 Redis 中删除令牌
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getName() != null) {
-            redisTemplate.delete(authentication.getName());
-        }
+        // 从 Redis 中删除令
+        redisTemplate.delete(UserContext.getUsername());
     }
 
 }

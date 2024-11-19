@@ -1,6 +1,8 @@
 package com.habitual.demo.user.service.impl;
 
 import com.habitual.demo.common.entity.CommonResponse;
+import com.habitual.demo.common.entity.UserInfo;
+import com.habitual.demo.common.security.UserContext;
 import com.habitual.demo.common.utils.JwtTokenUtil;
 import com.habitual.demo.user.entity.UserEntity;
 import com.habitual.demo.user.entity.dto.UserChangePasswordDto;
@@ -13,8 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -87,15 +87,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CommonResponse info() {
-        String username = null;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated() && authentication.getName() != null) {
-            username = authentication.getName();
-        } else {
-            return CommonResponse.fail("用户未认证或用户名为空");
-        }
         UserInfoDto info = new UserInfoDto();
-        info.setUsername(username);
+        info.setUsername(UserContext.getUsername());
         info.setAvatar("https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
         return CommonResponse.success(info);
     }
@@ -145,6 +138,19 @@ public class UserServiceImpl implements UserService {
                 pageable);
         result.forEach(user -> user.setPassword(null));
         return CommonResponse.success(new PagedModel<>(result));
+    }
+
+    public UserInfo getUserInfoByUsername(String username) {
+        UserEntity existingUser = userRepository.findByUsername(username);
+        if (existingUser == null) {
+            return new UserInfo();
+        } else {
+            UserInfo userInfo = new UserInfo();
+            userInfo.setId(existingUser.getId());
+            userInfo.setUsername(existingUser.getUsername());
+            userInfo.setNickName(existingUser.getNickName());
+            return userInfo;
+        }
     }
 
 }

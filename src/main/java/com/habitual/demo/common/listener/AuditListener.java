@@ -1,9 +1,9 @@
-package com.habitual.demo.common.entity;
+package com.habitual.demo.common.listener;
 
+import com.habitual.demo.common.entity.BaseEntity;
+import com.habitual.demo.common.security.UserContext;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Date;
 
@@ -25,11 +25,7 @@ public class AuditListener {
     }
 
     private String getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getName() != null) {
-            return authentication.getName();
-        }
-        return "未知用户";
+        return UserContext.getNickName();
     }
 
 }

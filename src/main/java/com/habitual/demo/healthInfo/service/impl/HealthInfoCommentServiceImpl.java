@@ -1,19 +1,16 @@
 package com.habitual.demo.healthInfo.service.impl;
 
 import com.habitual.demo.common.entity.CommonResponse;
+import com.habitual.demo.common.security.UserContext;
 import com.habitual.demo.healthInfo.entity.HealthInfoCommentEntity;
 import com.habitual.demo.healthInfo.entity.dto.HealthInfoCommentPageDto;
 import com.habitual.demo.healthInfo.repository.HealthInfoCommentRepository;
 import com.habitual.demo.healthInfo.service.HealthInfoCommentService;
-import com.habitual.demo.user.entity.UserEntity;
-import com.habitual.demo.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,20 +22,14 @@ public class HealthInfoCommentServiceImpl implements HealthInfoCommentService {
     @Autowired
     private HealthInfoCommentRepository healthInfoCommentRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @Override
     public CommonResponse save(HealthInfoCommentEntity input) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getName() != null) {
-            UserEntity user = userRepository.findByUsername(authentication.getName());
-            if (user != null) {
-                input.setUserId(user.getId());
-                healthInfoCommentRepository.save(input);
-                return CommonResponse.success("保存成功");
-            }
+        if (UserContext.getId() != null) {
+            input.setUserId(UserContext.getId());
+            healthInfoCommentRepository.save(input);
+            return CommonResponse.success("保存成功");
         }
+
         return CommonResponse.fail("保存失败");
     }
 

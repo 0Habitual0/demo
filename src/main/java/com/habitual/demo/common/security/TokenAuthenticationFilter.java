@@ -3,8 +3,7 @@ package com.habitual.demo.common.security;
 import com.habitual.demo.common.exception.TokenValidationException;
 import com.habitual.demo.common.service.ExceptionHandlerService;
 import com.habitual.demo.common.utils.JwtTokenUtil;
-import com.habitual.demo.user.entity.UserEntity;
-import com.habitual.demo.user.repository.UserRepository;
+import com.habitual.demo.user.service.impl.UserServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -22,7 +20,6 @@ import java.util.Collections;
 /**
  * Token身份验证过滤器
  */
-@Component
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -31,8 +28,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private ExceptionHandlerService exceptionHandlerService;
 
-//    @Autowired
-//    private UserRepository userRepository;
+    @Autowired
+    private UserServiceImpl userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -43,11 +40,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             if (username != null) {
                 Authentication authentication = getAuthentication(username);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                // TODO 也许在这里设置线程局部用户
-//                UserEntity currentUser = userRepository.findByUsername(username);
-//                if (currentUser != null) {
-//                    UserContext.setUser(currentUser);
-//                }
+                UserContext.setUser(userService.getUserInfoByUsername(username));
             }
         } catch (TokenValidationException ex) {
             // 过滤器无法被监听，主动调用异常处理

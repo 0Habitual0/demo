@@ -2,7 +2,6 @@ package com.habitual.demo.common.config;
 
 import com.habitual.demo.common.security.CustomSessionInformationExpiredStrategy;
 import com.habitual.demo.common.security.TokenAuthenticationFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,9 +21,6 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private CustomSessionInformationExpiredStrategy sessionInformationExpiredStrategy;// 自定义最老会话失效策略
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -40,10 +36,15 @@ public class SecurityConfig {
                         .maximumSessions(1) // 设置同一用户最多允许的会话数
                         .maxSessionsPreventsLogin(false) // false表示后登录的用户会顶掉先登录的用户 和sessionInformationExpiredStrategy搭配使用
                         .sessionRegistry(sessionRegistry())
-                        .expiredSessionStrategy(sessionInformationExpiredStrategy)
+                        .expiredSessionStrategy(sessionInformationExpiredStrategy())
                 )
                 .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+    @Bean
+    public CustomSessionInformationExpiredStrategy sessionInformationExpiredStrategy() {
+        return new CustomSessionInformationExpiredStrategy();
     }
 
     @Bean

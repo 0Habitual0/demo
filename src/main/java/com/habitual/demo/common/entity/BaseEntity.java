@@ -1,6 +1,7 @@
 package com.habitual.demo.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.habitual.demo.common.listener.AuditListener;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
