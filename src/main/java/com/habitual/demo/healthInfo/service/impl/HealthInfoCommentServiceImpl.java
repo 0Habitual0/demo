@@ -2,10 +2,15 @@ package com.habitual.demo.healthInfo.service.impl;
 
 import com.habitual.demo.common.entity.CommonResponse;
 import com.habitual.demo.healthInfo.entity.HealthInfoCommentEntity;
+import com.habitual.demo.healthInfo.entity.HealthInfoEntity;
 import com.habitual.demo.healthInfo.entity.dto.HealthInfoCommentPageDto;
 import com.habitual.demo.healthInfo.repository.HealthInfoCommentRepository;
 import com.habitual.demo.healthInfo.service.HealthInfoCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,22 +24,31 @@ public class HealthInfoCommentServiceImpl implements HealthInfoCommentService {
 
     @Override
     public CommonResponse save(HealthInfoCommentEntity input) {
-        return null;
+        healthInfoCommentRepository.save(input);
+        return CommonResponse.success("保存成功");
     }
 
     @Override
     public CommonResponse delete(Long id) {
-        return null;
+        healthInfoCommentRepository.deleteById(id);
+        return CommonResponse.success("删除成功");
     }
 
     @Override
     public CommonResponse selectByPage(HealthInfoCommentPageDto input) {
-        return null;
+        Pageable pageable = PageRequest.of(input.getPageNum()-1, input.getPageSize());
+        Page<HealthInfoEntity> result = healthInfoCommentRepository.findByCriteria(
+                input.getContent(),
+                input.getCreateBy(),
+                input.getUpdateBy(),
+                input.getRemark(),
+                pageable);
+        return CommonResponse.success(new PagedModel<>(result));
     }
 
     @Override
     public CommonResponse selectByHealthInfo(Long healthInfoId) {
-        return null;
+        return CommonResponse.success(healthInfoCommentRepository.findByHealthInfoId(healthInfoId));
     }
 
 }

@@ -7,6 +7,8 @@ import lombok.Setter;
 @Setter
 public class HealthInfoCommentPageDto {
 
+    private String content;
+
     private String createBy;
 
     private String updateBy;
