@@ -1,6 +1,7 @@
 package com.habitual.demo.healthInfo.entity;
 
 import com.habitual.demo.common.entity.BaseEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -36,6 +37,7 @@ public class HealthInfoCommentEntity extends BaseEntity {
     /**
      * 内容
      */
+    @Column(columnDefinition = "LONGTEXT")
     private String content;
 
 }
