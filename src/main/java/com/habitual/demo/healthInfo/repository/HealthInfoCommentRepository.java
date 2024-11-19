@@ -20,12 +20,12 @@ public interface HealthInfoCommentRepository extends JpaRepository<HealthInfoCom
             "(:createBy IS NULL OR h.createBy LIKE %:createBy%) AND" +
             "(:updateBy IS NULL OR h.updateBy LIKE %:updateBy%) AND" +
             "(:remark IS NULL OR h.remark LIKE %:remark%)")
-    Page<HealthInfoEntity> findByCriteria(@Param("content") String content,
+    Page<HealthInfoCommentEntity> findByCriteria(@Param("content") String content,
                                           @Param("createBy") String createBy,
                                           @Param("updateBy") String updateBy,
                                           @Param("remark") String remark,
                                           Pageable pageable);
 
-    List<HealthInfoCommentEntity> findByHealthInfoId(Long healthInfoId);
+    List<HealthInfoCommentEntity> findByHealthInfoIdOrderByCreateTimeDesc(Long healthInfoId);
 
 }

@@ -2,15 +2,18 @@ package com.habitual.demo.healthInfo.service.impl;
 
 import com.habitual.demo.common.entity.CommonResponse;
 import com.habitual.demo.healthInfo.entity.HealthInfoCommentEntity;
-import com.habitual.demo.healthInfo.entity.HealthInfoEntity;
 import com.habitual.demo.healthInfo.entity.dto.HealthInfoCommentPageDto;
 import com.habitual.demo.healthInfo.repository.HealthInfoCommentRepository;
 import com.habitual.demo.healthInfo.service.HealthInfoCommentService;
+import com.habitual.demo.user.entity.UserEntity;
+import com.habitual.demo.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,10 +25,21 @@ public class HealthInfoCommentServiceImpl implements HealthInfoCommentService {
     @Autowired
     private HealthInfoCommentRepository healthInfoCommentRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public CommonResponse save(HealthInfoCommentEntity input) {
-        healthInfoCommentRepository.save(input);
-        return CommonResponse.success("保存成功");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getName() != null) {
+            UserEntity user = userRepository.findByUsername(authentication.getName());
+            if (user != null) {
+                input.setUserId(user.getId());
+                healthInfoCommentRepository.save(input);
+                return CommonResponse.success("保存成功");
+            }
+        }
+        return CommonResponse.fail("保存失败");
     }
 
     @Override
@@ -37,7 +51,7 @@ public class HealthInfoCommentServiceImpl implements HealthInfoCommentService {
     @Override
     public CommonResponse selectByPage(HealthInfoCommentPageDto input) {
         Pageable pageable = PageRequest.of(input.getPageNum()-1, input.getPageSize());
-        Page<HealthInfoEntity> result = healthInfoCommentRepository.findByCriteria(
+        Page<HealthInfoCommentEntity> result = healthInfoCommentRepository.findByCriteria(
                 input.getContent(),
                 input.getCreateBy(),
                 input.getUpdateBy(),
@@ -48,7 +62,7 @@ public class HealthInfoCommentServiceImpl implements HealthInfoCommentService {
 
     @Override
     public CommonResponse selectByHealthInfo(Long healthInfoId) {
-        return CommonResponse.success(healthInfoCommentRepository.findByHealthInfoId(healthInfoId));
+        return CommonResponse.success(healthInfoCommentRepository.findByHealthInfoIdOrderByCreateTimeDesc(healthInfoId));
     }
 
 }

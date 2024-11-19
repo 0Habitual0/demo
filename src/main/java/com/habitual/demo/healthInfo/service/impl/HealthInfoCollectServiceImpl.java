@@ -34,6 +34,7 @@ public class HealthInfoCollectServiceImpl implements HealthInfoCollectService {
                 if (healthInfoCollectEntity != null) {
                     healthInfoCollectRepository.delete(healthInfoCollectEntity);
                 } else {
+                    input.setUserId(user.getId());
                     healthInfoCollectRepository.save(input);
                 }
                 return CommonResponse.success("成功");

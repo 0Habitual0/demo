@@ -49,7 +49,7 @@ public class HealthInfoCommentController {
      * 根据健康资讯查询
      */
     @GetMapping("selectByHealthInfo")
-    public CommonResponse selectByHealthInfo(@RequestBody Long healthInfoId) {
+    public CommonResponse selectByHealthInfo(@RequestParam Long healthInfoId) {
         return healthInfoCommentService.selectByHealthInfo(healthInfoId);
     }
 
