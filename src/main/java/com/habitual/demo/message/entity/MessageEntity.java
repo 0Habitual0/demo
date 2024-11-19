@@ -29,11 +29,6 @@ public class MessageEntity extends BaseEntity {
     private Long parentId;
 
     /**
-     * 业务关联主键id
-     */
-    private Long relatedId;
-
-    /**
      * 用户关联主键id
      */
     private Long userId;
@@ -42,10 +37,5 @@ public class MessageEntity extends BaseEntity {
      * 内容
      */
     private String content;
-
-    /**
-     * 类型
-     */
-    private String type;
 
 }

@@ -7,11 +7,13 @@ import lombok.Setter;
 @Setter
 public class MessagePageDto {
 
-    private Long relatedId;
+    private String content;
 
-    private Long userId;
+    private String createBy;
 
-    private String type;
+    private String updateBy;
+
+    private String remark;
 
     private int pageNum;
 

@@ -5,9 +5,11 @@ import com.habitual.demo.message.entity.MessageEntity;
 import com.habitual.demo.message.entity.dto.MessagePageDto;
 import com.habitual.demo.message.repository.MessageRepository;
 import com.habitual.demo.message.service.MessageService;
-import com.habitual.demo.user.entity.UserEntity;
-import com.habitual.demo.user.entity.dto.UserPageDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,7 +35,14 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public CommonResponse selectByPage(MessagePageDto input) {
-        return null;
+        Pageable pageable = PageRequest.of(input.getPageNum()-1, input.getPageSize());
+        Page<MessageEntity> result = messageRepository.findByCriteria(
+                input.getContent(),
+                input.getCreateBy(),
+                input.getUpdateBy(),
+                input.getRemark(),
+                pageable);
+        return CommonResponse.success(new PagedModel<>(result));
     }
 
 }
