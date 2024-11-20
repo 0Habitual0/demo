@@ -15,4 +15,6 @@ public interface MessageService {
 
     CommonResponse selectByPage(MessagePageDto input);
 
+    CommonResponse selectByUser();
+
 }

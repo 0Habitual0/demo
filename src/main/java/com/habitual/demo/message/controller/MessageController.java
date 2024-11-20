@@ -41,4 +41,12 @@ public class MessageController {
         return messageService.selectByPage(input);
     }
 
+    /**
+     * 根据用户查询
+     */
+    @GetMapping("selectByUser")
+    public CommonResponse selectByUser() {
+        return messageService.selectByUser();
+    }
+
 }

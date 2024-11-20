@@ -2,6 +2,7 @@ package com.habitual.demo.user.service.impl;
 
 import com.habitual.demo.common.entity.CommonResponse;
 import com.habitual.demo.common.entity.UserInfo;
+import com.habitual.demo.common.exception.TokenValidationException;
 import com.habitual.demo.common.security.UserContext;
 import com.habitual.demo.common.utils.JwtTokenUtil;
 import com.habitual.demo.user.entity.UserEntity;
@@ -143,7 +144,7 @@ public class UserServiceImpl implements UserService {
     public UserInfo getUserInfoByUsername(String username) {
         UserEntity existingUser = userRepository.findByUsername(username);
         if (existingUser == null) {
-            return new UserInfo();
+            throw new TokenValidationException("您的请求包含非法的令牌。请重新登录", 50008);
         } else {
             UserInfo userInfo = new UserInfo();
             userInfo.setId(existingUser.getId());

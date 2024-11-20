@@ -1,6 +1,7 @@
 package com.habitual.demo.common.security;
 
 import com.habitual.demo.common.entity.UserInfo;
+import com.habitual.demo.common.exception.TokenValidationException;
 
 /**
  * 线程局部变量类 获取用户信息
@@ -13,16 +14,23 @@ public class UserContext {
         userHolder.set(user);
     }
 
+    private static UserInfo getUser() {
+        if (userHolder.get() == null) {
+            throw new TokenValidationException("用户信息不存在。请重新登录", 50008);
+        }
+        return userHolder.get();
+    }
+
     public static Long getId() {
-        return userHolder.get().getId();
+        return getUser().getId();
     }
 
     public static String getUsername() {
-        return userHolder.get().getUsername();
+        return getUser().getUsername();
     }
 
     public static String getNickName() {
-        return userHolder.get().getNickName();
+        return getUser().getNickName();
     }
 
     public static void clear() {
