@@ -10,4 +10,6 @@ public interface HealthInfoCollectService {
 
     CommonResponse collect(HealthInfoCollectEntity input);
 
+    CommonResponse isCollect(Long healthInfoId);
+
 }

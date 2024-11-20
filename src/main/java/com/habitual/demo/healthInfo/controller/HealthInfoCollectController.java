@@ -6,10 +6,7 @@ import com.habitual.demo.healthInfo.service.HealthInfoCollectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 控制层 健康资讯收藏
@@ -29,6 +26,14 @@ public class HealthInfoCollectController {
     @PostMapping("save")
     public CommonResponse save(@RequestBody HealthInfoCollectEntity input) {
         return healthInfoCollectService.collect(input);
+    }
+
+    /**
+     * 查询是否收藏
+     */
+    @GetMapping("isCollect")
+    public CommonResponse isCollect(@RequestParam Long healthInfoId) {
+        return healthInfoCollectService.isCollect(healthInfoId);
     }
 
 }

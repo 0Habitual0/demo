@@ -23,14 +23,28 @@ public class HealthInfoCollectServiceImpl implements HealthInfoCollectService {
             HealthInfoCollectEntity healthInfoCollectEntity = healthInfoCollectRepository.findByUserIdAndHealthInfoId(UserContext.getId(), input.getHealthInfoId());
             if (healthInfoCollectEntity != null) {
                 healthInfoCollectRepository.delete(healthInfoCollectEntity);
+                return CommonResponse.success(false);
             } else {
                 input.setUserId(UserContext.getId());
                 healthInfoCollectRepository.save(input);
+                return CommonResponse.success(true);
             }
-            return CommonResponse.success("成功");
         }
 
         return CommonResponse.fail("收藏失败");
+    }
+
+    @Override
+    public CommonResponse isCollect(Long healthInfoId) {
+        if (UserContext.getId() != null) {
+            HealthInfoCollectEntity healthInfoCollectEntity = healthInfoCollectRepository.findByUserIdAndHealthInfoId(UserContext.getId(), healthInfoId);
+            if (healthInfoCollectEntity != null) {
+                return CommonResponse.success(true);
+            } else {
+                return CommonResponse.success(false);
+            }
+        }
+        return CommonResponse.fail("查询用户信息失败");
     }
 
 }
