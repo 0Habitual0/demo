@@ -18,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -88,9 +90,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CommonResponse info() {
+        UserEntity userEntity = userRepository.findByUsername(UserContext.getUsername());
         UserInfoDto info = new UserInfoDto();
-        info.setUsername(UserContext.getUsername());
+        info.setName(UserContext.getUsername());
         info.setAvatar("https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
+        List<String> roles = new ArrayList<>();
+        roles.add(userEntity.getRole());
+        info.setRoles(roles);
         return CommonResponse.success(info);
     }
 
