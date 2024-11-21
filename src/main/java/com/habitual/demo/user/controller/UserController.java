@@ -94,4 +94,20 @@ public class UserController {
         return userService.selectByPage(input);
     }
 
+    /**
+     * 个人中心页
+     */
+    @GetMapping("personalCenter")
+    public CommonResponse personalCenter() {
+        return userService.personalCenter();
+    }
+
+    /**
+     * 下拉框
+     */
+    @GetMapping("dropDownList")
+    public CommonResponse dropDownList() {
+        return userService.dropDownList();
+    }
+
 }

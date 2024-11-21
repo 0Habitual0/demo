@@ -7,6 +7,7 @@ import com.habitual.demo.common.security.UserContext;
 import com.habitual.demo.common.utils.JwtTokenUtil;
 import com.habitual.demo.user.entity.UserEntity;
 import com.habitual.demo.user.entity.dto.UserChangePasswordDto;
+import com.habitual.demo.user.entity.dto.UserDropDownListDto;
 import com.habitual.demo.user.entity.dto.UserInfoDto;
 import com.habitual.demo.user.entity.dto.UserPageDto;
 import com.habitual.demo.user.repository.UserRepository;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 业务层实现 用户
@@ -145,6 +147,22 @@ public class UserServiceImpl implements UserService {
                 pageable);
         result.forEach(user -> user.setPassword(null));
         return CommonResponse.success(new PagedModel<>(result));
+    }
+
+    @Override
+    public CommonResponse personalCenter() {
+        UserEntity userEntity = userRepository.findByUsername(UserContext.getUsername());
+        userEntity.setPassword(null);
+        return CommonResponse.success(userEntity);
+    }
+
+    @Override
+    public CommonResponse dropDownList() {
+        List<UserEntity> healthDataEntityList = userRepository.findAll();
+        List<UserDropDownListDto> userDTOList = healthDataEntityList.stream()
+                .map(user -> new UserDropDownListDto(user.getId(), user.getUsername(), user.getNickName()))
+                .toList();
+        return CommonResponse.success(userDTOList);
     }
 
     public UserInfo getUserInfoByUsername(String username) {
