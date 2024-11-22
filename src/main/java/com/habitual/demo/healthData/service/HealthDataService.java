@@ -15,4 +15,6 @@ public interface HealthDataService {
 
     CommonResponse selectByPage(HealthDataPageDto input);
 
+    CommonResponse trendChart();
+
 }

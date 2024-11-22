@@ -45,4 +45,12 @@ public class HealthDataController {
         return healthDataService.selectByPage(input);
     }
 
+    /**
+     * 总体趋势图
+     */
+    @PostMapping("trendChart")
+    public CommonResponse trendChart() {
+        return healthDataService.trendChart();
+    }
+
 }
