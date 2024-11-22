@@ -1,20 +1,11 @@
 package com.habitual.demo.healthData.entity.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
-
 @Getter
 @Setter
-public class HealthDataTrendChartDto {
-
-    /**
-     * 时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+08:00")
-    private Date date;
+public class HealthDataBarChartDto {
 
     /**
      * 肺活量(ml)平均值

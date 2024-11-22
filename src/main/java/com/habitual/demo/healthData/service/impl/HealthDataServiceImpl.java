@@ -3,6 +3,7 @@ package com.habitual.demo.healthData.service.impl;
 import com.habitual.demo.common.entity.CommonResponse;
 import com.habitual.demo.common.security.UserContext;
 import com.habitual.demo.healthData.entity.HealthDataEntity;
+import com.habitual.demo.healthData.entity.dto.HealthDataBarChartDto;
 import com.habitual.demo.healthData.entity.dto.HealthDataPageDto;
 import com.habitual.demo.healthData.entity.dto.HealthDataTrendChartDto;
 import com.habitual.demo.healthData.repository.HealthDataRepository;
@@ -92,6 +93,24 @@ public class HealthDataServiceImpl implements HealthDataService {
             output.add(dto);
         }
         output = output.stream() .sorted(Comparator.comparing(HealthDataTrendChartDto::getDate)) .collect(Collectors.toList());
+        return CommonResponse.success(output);
+    }
+
+    @Override
+    public CommonResponse barChart() {
+        List<HealthDataEntity> data = healthDataRepository.findAll();
+        HealthDataBarChartDto output = new HealthDataBarChartDto();
+        long totalVitalCapacity = data.stream().mapToLong(HealthDataEntity::getVitalCapacity).sum();
+        output.setVitalCapacity(totalVitalCapacity);
+        long totalBloodSugar = data.stream().mapToLong(HealthDataEntity::getBloodSugar).sum();
+        output.setBloodSugar(totalBloodSugar);
+        long totalBloodFat = data.stream().mapToLong(HealthDataEntity::getBloodFat).sum();
+        output.setBloodFat(totalBloodFat);
+        long totalBloodPressure = data.stream().mapToLong(HealthDataEntity::getBloodPressure).sum();
+        output.setBloodPressure(totalBloodPressure);
+        long totalCholesterol = data.stream().mapToLong(HealthDataEntity::getCholesterol).sum();
+        output.setCholesterol(totalCholesterol);
+
         return CommonResponse.success(output);
     }
 

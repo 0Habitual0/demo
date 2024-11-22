@@ -17,4 +17,6 @@ public interface HealthDataService {
 
     CommonResponse trendChart();
 
+    CommonResponse barChart();
+
 }

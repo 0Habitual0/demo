@@ -53,4 +53,12 @@ public class HealthDataController {
         return healthDataService.trendChart();
     }
 
+    /**
+     * 总体数据图
+     */
+    @PostMapping("barChart")
+    public CommonResponse barChart() {
+        return healthDataService.barChart();
+    }
+
 }
